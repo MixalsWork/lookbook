@@ -1,0 +1,114 @@
+.lookbook {
+  .lookbook__wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 100px;
+
+    .lookbook__title {
+      text-align: center;
+    }
+
+    .lookbook__content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 40px;
+
+      .lookbook__contentItem {
+        width: 100%;
+        height: 40vw;
+        max-height: 500px;
+        cursor: pointer;
+
+        &.lookbook__contentItem--active {
+          .lookbook__contentItemPopup {
+            left: 0;
+          }
+        }
+
+        .lookbook__contentItemImage {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .lookbook__contentItemPopup {
+          position: fixed;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          right: 0;
+          left: -200%;
+          margin: auto;
+          width: 50vw;
+          height: 50vw;
+          max-width: 600px;
+          max-height: 600px;
+          background-color: #fff;
+          border-radius: 5px;
+          box-shadow: 0px 0px 100px #000;
+          display: grid;
+          grid-template-columns: 40% 60%;
+          z-index: 6;
+          transition: all ease .3s;
+
+          .itemPopup__content {
+            padding: 20px;
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            row-gap: 20px;
+
+            .contentItem {
+              height: 100%;
+              width: 100%;
+              display: grid;
+              grid-template-columns: 30% 70%;
+
+              .contentItem__imageWrapper {
+                width: 100%;
+                height: 100%;
+
+                .contentItem__image {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                }
+              }
+
+              .contentItem__content {
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+
+                .contentItem__contentHeader {
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  margin-bottom: 20px;
+                }
+
+                .contentItem__contentDescription {
+                  margin-bottom: 20px;
+                }
+
+                .contentItem__contentFormWrapper {
+                  margin-top: auto;
+
+                  .contentItem__contentForm {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    .contentItem__contentFormButtonWrapper {
+                      margin-left: auto;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{% assign variantsArr = product.metafields.bundle.product | split: '|' %}
+<div class="product-single__title" data-price="{{ product.price }}">
+  <h2>{{ product.title }}</h2>
+</div>
+<div class="product-image-main">
+  <img class="product-image-main__image"  src="{{ product.featured_image | img_url: 'medium' }}" alt="" data-bundleimg="{{ product.featured_image | img_url }}" data-handle="{{ product.handle }}" data-test="{{ product.metafields.bundle.product }}">
+</div>
+  {%- for item in variantsArr -%}
+  <div class="item" data-variantTitle="{{ item }}">
+    <h5>{{ item }}</h5>
+    <img src="{{ all_products[item].featured_image | img_url: 'medium' }}" alt="">
+  </div>
+   
+    <select class="bundle_select" name="" id="">
+      {%- for variant in all_products[item].variants -%}
+        <option value="{{ variant.title | escape }}" data-id="{{ variant.id }}" data-priceprop="{{ variant.price }}">
+          {{ variant.title }}
+        </option>
+      {%- endfor -%}
+    </select>
+  {%- endfor -%}
+
+  <button class="addToCartButton">Add to cart</button>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+  <script src="{{ 'product-form-bundle.js' | asset_url }}" defer="defer"></script>

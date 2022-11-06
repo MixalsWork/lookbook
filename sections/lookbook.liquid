@@ -1,0 +1,159 @@
+{%- assign s =  section -%}
+{%- assign ss = s.settings -%}
+{%- assign isBlockFill = false -%}
+
+{%- for block in s.blocks -%}
+  {%- assign bs = block.settings -%}
+  {%- if bs.image != blank and bs.produtc_list != blank -%}
+    {%- assign isBlockFill = true -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if ss.isShow  and isBlockFill -%}
+  <link rel="stylesheet" href="{{- 'lookbook.scss.css' | asset_url -}}">
+  <script src="{{- 'lookbook.js' | asset_url -}}" defer></script>
+
+  <section class="lookbook" id="lookbook-{{ s.id }}" data-section="{{ s.id }}">
+    <div class="lookbook__wrapper">
+      {%- if ss.title != blank -%}
+        <h1 class="lookbook__title">
+          {{- ss.title -}}
+        </h1>
+      {%- endif -%}
+      <div class="lookbook__content">
+        {%- for block in s.blocks -%}
+          {%- assign bs = block.settings -%}
+          {%- if bs.image != blank and bs.produtc_list != blank -%}
+            <div class="lookbook__contentItem">
+              <img class="lookbook__contentItemImage" src="{{- bs.image | img_url: 'master' -}}" alt="{{- bs.image.alt -}}">
+              <div class="lookbook__contentItemPopup itemPopup">
+                <div class="itemPopup__imageWrapper">
+                  <img class="lookbook__contentItemImage" src="{{- bs.image | img_url: 'master' -}}" alt="{{- bs.image.alt -}}">
+                </div>
+                <div class="itemPopup__content">
+                  {%- for product in bs.produtc_list -%}
+                    <div class="itemPopup__contentItem contentItem">
+                      <div class="contentItem__imageWrapper">
+                        <img class="contentItem__image" src="{{- product.featured_image | img_url: 'master' -}}" alt="{{- product.title -}}">
+                      </div>
+                      <div class="contentItem__content">
+                        <div class="contentItem__contentHeader">
+                          <div class="contentItem__contentHeaderTitle">
+                            {{- product.title -}}
+                          </div>
+                          <div class="contentItem__contentHeaderPrice">
+                            {{- product.price | money_with_currency -}}
+                          </div>
+                        </div>
+                        <div class="contentItem__contentDescription">
+                          {{- product.description -}}
+                        </div>
+                        <div class="contentItem__contentFormWrapper">
+                          {%- form 'product', product, class: 'contentItem__contentForm' -%}
+                            <div class="contentItem__contentFormVariant">
+                              {%- unless product.has_only_default_variant -%}
+                                <select name="id">
+                                  {%- for variant in product.variants -%}
+                                    <option value="{{- variant.id -}}">
+                                      {{- variant.title -}}
+                                    </option>
+                                  {%- endfor -%}
+                                </select>
+                              {%- endunless -%}
+                            </div>
+                            <div class="contentItem__contentFormButtonWrapper">
+                              <button class="contentItem__contentFormButton">
+                                {{- 'products.product.add_to_cart' | t -}}
+                              </button>
+                            </div>
+                          {%- endform -%}
+                        </div>
+                      </div>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+
+{%- schema -%}
+  {
+    "name": "Lookbook",
+    "class": "section",
+    "tag": "section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "In order for a section to appear, it must contain:",
+        "info": "at least 1n block and check the checkbox that is responsible for displaying the section"
+      },
+      {
+        "type": "header",
+        "content": "Main section settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "isShow",
+        "label": "Show section",
+        "default": true,
+        "info": "required"
+      },
+      {
+        "type": "header",
+        "content": "Section title settings"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Lookbook"
+      }
+    ],
+    "max_blocks": 3,
+    "blocks": [
+      {
+        "type": "product",
+        "name": "Product",
+        "settings": [
+          {
+            "type": "header",
+            "content": "In order for the block to appear, you need:",
+            "info": "to fill in the Picture for it and choose which products will be included in it."
+          },
+          {
+            "type": "header",
+            "content": "Section item image settings"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image",
+            "info": "required"
+          },
+          {
+            "type": "header",
+            "content": "Section item products settings"
+          },
+          {
+            "type": "product_list",
+            "id": "produtc_list",
+            "label": "Product list",
+            "info": "required",
+            "limit": 3
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Lookbook"
+      }
+    ]
+  }
+{%- endschema -%}
